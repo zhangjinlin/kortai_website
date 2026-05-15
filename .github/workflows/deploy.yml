@@ -23,15 +23,13 @@ jobs:
           npm install
           npm run build
 
-      - name: 安装 SSH 密钥
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-
-      - name: 上传到服务器
-        run: |
-          rsync -avz --delete \
-            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
-            out/ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/var/www/kortai/
-        working-directory: kortai-website
+      - name: 部署到服务器
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "kortai-website/out/*"
+          target: "/var/www/kortai"
+          strip_components: 2
+          rm: true
