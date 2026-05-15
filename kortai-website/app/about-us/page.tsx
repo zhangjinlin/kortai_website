@@ -14,7 +14,7 @@ const KortAIPage: React.FC = () => {
       window.location.href = "https://play.google.com/store/apps/details?id=com.aigc.kort_ai";
     } else {
       e.preventDefault();
-      alert("请在手机上下载 Kort AI");
+      alert("请在手机上下载 Kort AI.");
     }
   };
 
