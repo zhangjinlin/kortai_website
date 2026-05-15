@@ -12,8 +12,7 @@ const Home: React.FC = () => {
     const userAgent = typeof navigator === "undefined" ? "" : navigator.userAgent;
 
     if (/iPhone|iPad|iPod/i.test(userAgent)) {
-      e.preventDefault();
-      alert("iOS 版本开发中，敬请期待！");
+      window.location.href = "https://apps.apple.com/app/kort-ai/id6756208165";
     } else if (/Android/i.test(userAgent)) {
       window.location.href = "https://play.google.com/store/apps/details?id=com.aigc.kort_ai";
     } else {
