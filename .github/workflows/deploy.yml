@@ -7,6 +7,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kortai-website
+
     steps:
       - uses: actions/checkout@v4
 
@@ -14,7 +18,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: 安装依赖
+      - name: 安装依赖并构建
         run: |
           npm install
           npm run build
@@ -30,3 +34,4 @@ jobs:
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
             out/ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/var/www/kortai/
+        working-directory: kortai-website
