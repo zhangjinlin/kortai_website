@@ -1,10 +1,12 @@
 "use client";
 
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 const InstallPageContent: React.FC = () => {
   const [copied, setCopied] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const searchParams = useSearchParams();
 
   const hasCode = searchParams.has("code");
@@ -28,10 +30,29 @@ const InstallPageContent: React.FC = () => {
     }
   };
 
+  const handleVideoToggle = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.muted = true;
+      video.play().then(() => {
+        setPlaying(true);
+      }).catch((err) => {
+        console.error("Video play failed:", err);
+        // fallback: show controls so user can tap again
+        video.controls = true;
+        setPlaying(true);
+      });
+    } else {
+      video.pause();
+      setPlaying(false);
+    }
+  };
+
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#0d0b1a",
+      background: "#0a0f0a",
       color: "#fff",
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif",
       display: "flex",
@@ -49,19 +70,11 @@ const InstallPageContent: React.FC = () => {
         gap: "8px",
         paddingTop: "40px",
       }}>
-        <div style={{
-          width: "36px",
-          height: "36px",
-          background: "linear-gradient(135deg, #7c3aed, #a855f7)",
-          borderRadius: "10px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-          </svg>
-        </div>
+        <img
+          src="/logo_icon.png"
+          alt="Kort AI"
+          style={{ width: "40px", height: "40px", borderRadius: "10px" }}
+        />
         <span style={{ fontSize: "22px", fontWeight: 700 }}>Kort.ai</span>
       </div>
 
@@ -72,9 +85,10 @@ const InstallPageContent: React.FC = () => {
           fontWeight: 800,
           lineHeight: 1.35,
           margin: "0 0 10px",
-          background: "linear-gradient(135deg, #a78bfa, #c084fc)",
+          background: "linear-gradient(90deg, #46D3A9 0%, #7BDC7F 50%, #C6E857 100%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
+          color: "transparent",
         }}>
           Try Kort AI and Get
           <br />
@@ -88,51 +102,86 @@ const InstallPageContent: React.FC = () => {
         }}>
           Try all the amazing AI video/image models
           <br />
-          and tools. Get up to 60 free credits!
+          and tools. Get up to 100 free credits!
         </p>
       </div>
 
-      {/* Demo Image */}
+      {/* Demo Video */}
       <div style={{
         marginTop: "24px",
         position: "relative",
         borderRadius: "16px",
         overflow: "hidden",
-        background: "linear-gradient(180deg, rgba(168,85,247,0.08) 0%, rgba(236,72,153,0.08) 100%)",
-        border: "1px solid rgba(168,85,247,0.15)",
+        background: "linear-gradient(180deg, rgba(70,211,169,0.08) 0%, rgba(198,232,87,0.08) 100%)",
+        border: "1px solid rgba(70,211,169,0.15)",
+        aspectRatio: "3 / 4",
       }}>
-        <img
-          src="/demo-showcase.jpg"
-          alt="Kort AI Demo"
+        <video
+          ref={videoRef}
+          src="https://res.kortai.info/filters/videos/20260606/bc8df653-99a9-4f6c-8352-f656dcedc10b.mp4"
+          playsInline
+          muted
+          preload="auto"
+          onEnded={() => setPlaying(false)}
+          onPause={() => setPlaying(false)}
+          onPlay={() => setPlaying(true)}
           style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
             width: "100%",
-            height: "auto",
-            display: "block",
-            minHeight: "260px",
+            height: "100%",
             objectFit: "cover",
-            background: "linear-gradient(135deg, #1a1530 0%, #2d1b4e 50%, #1a1530 100%)",
+            zIndex: 1,
+            opacity: playing ? 1 : 0,
+            transition: "opacity 0.3s ease",
+          }}
+        />
+        {/* Cover Image */}
+        <img
+          src="https://res.kortai.info/filters/images/20260606/8fd1767d-2f98-4be9-bcd0-1b89cbd04331.webp"
+          alt="Kort AI Demo"
+          onClick={handleVideoToggle}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: playing ? 0 : 2,
+            cursor: "pointer",
+            transition: "opacity 0.3s ease",
+            opacity: playing ? 0 : 1,
           }}
         />
         {/* Play button overlay */}
-        <div style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "56px",
-          height: "56px",
-          borderRadius: "50%",
-          background: "rgba(255,255,255,0.15)",
-          backdropFilter: "blur(8px)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          border: "2px solid rgba(255,255,255,0.2)",
-        }}>
-          <svg width="22" height="24" viewBox="0 0 22 24" fill="#fff">
-            <path d="M0 0v24l22-12z"/>
-          </svg>
-        </div>
+        {!playing && (
+          <div
+            onClick={handleVideoToggle}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "56px",
+              height: "56px",
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.15)",
+              backdropFilter: "blur(8px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "2px solid rgba(255,255,255,0.2)",
+              cursor: "pointer",
+              zIndex: 3,
+            }}
+          >
+            <svg width="22" height="24" viewBox="0 0 22 24" fill="#fff">
+              <path d="M0 0v24l22-12z"/>
+            </svg>
+          </div>
+        )}
       </div>
 
       {/* Bottom Card */}
@@ -146,20 +195,11 @@ const InstallPageContent: React.FC = () => {
         {/* Header row: Logo + text + QR */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1 }}>
-            <div style={{
-              width: "36px",
-              height: "36px",
-              background: "linear-gradient(135deg, #7c3aed, #a855f7)",
-              borderRadius: "10px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-            }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-              </svg>
-            </div>
+            <img
+              src="/logo_icon.png"
+              alt="Kort AI"
+              style={{ width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0 }}
+            />
             <div>
               <span style={{ fontSize: "15px", fontWeight: 700 }}>Kort.ai</span>
               <p style={{ fontSize: "11px", color: "#a1a1aa", margin: "2px 0 0" }}>
@@ -196,20 +236,20 @@ const InstallPageContent: React.FC = () => {
               alignItems: "center",
               justifyContent: "space-between",
               padding: "12px 16px",
-              background: "rgba(168,85,247,0.06)",
+              background: "rgba(70,211,169,0.06)",
               borderRadius: "10px",
-              border: "1px solid rgba(168,85,247,0.12)",
+              border: "1px solid rgba(70,211,169,0.12)",
             }}>
               <span style={{ fontSize: "13px", color: "#a1a1aa", flex: 1 }}>
-                Copy the code, go to &quot;Me &gt; Settings &gt; Refer a Friend&quot; and use the code to get 10 credits.
+                Copy the code to register, or download directly to get 50 credits.
               </span>
               <button
                 onClick={handleCopy}
                 style={{
                   padding: "6px 16px",
-                  backgroundColor: copied ? "#16a34a" : "rgba(168,85,247,0.15)",
-                  color: copied ? "#fff" : "#a78bfa",
-                  border: `1px solid ${copied ? "#22c55e" : "rgba(168,85,247,0.3)"}`,
+                  backgroundColor: copied ? "#16a34a" : "rgba(70,211,169,0.15)",
+                  color: copied ? "#fff" : "#46D3A9",
+                  border: `1px solid ${copied ? "#22c55e" : "rgba(70,211,169,0.3)"}`,
                   borderRadius: "8px",
                   fontSize: "13px",
                   fontWeight: 500,
@@ -237,14 +277,14 @@ const InstallPageContent: React.FC = () => {
           style={{
             width: "100%",
             padding: "16px 0",
-            background: "linear-gradient(135deg, #7c3aed, #ec4899)",
-            color: "#fff",
+            background: "linear-gradient(135deg, #46D3A9, #C6E857)",
+            color: "#000",
             border: "none",
             borderRadius: "14px",
             fontSize: "17px",
             fontWeight: 700,
             cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(124,58,237,0.35)",
+            boxShadow: "0 4px 20px rgba(70,211,169,0.35)",
           }}
         >
           Download Kort AI Now
@@ -258,16 +298,16 @@ const InstallPageContent: React.FC = () => {
         right: "24px",
         width: "52px",
         height: "52px",
-        background: "linear-gradient(135deg, #7c3aed, #ec4899)",
+        background: "linear-gradient(135deg, #46D3A9, #C6E857)",
         borderRadius: "50%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        boxShadow: "0 4px 16px rgba(124,58,237,0.4)",
+        boxShadow: "0 4px 16px rgba(70,211,169,0.4)",
         cursor: "pointer",
         zIndex: 100,
       }}>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="2" y="6" width="20" height="12" rx="2"/>
           <path d="M12 12v6M9 15l3 3 3-3"/>
         </svg>
@@ -278,7 +318,7 @@ const InstallPageContent: React.FC = () => {
 
 const InstallPage: React.FC = () => {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#0d0b1a" }} />}>
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#0a0f0a" }} />}>
       <InstallPageContent />
     </Suspense>
   );
