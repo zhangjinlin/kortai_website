@@ -1,16 +1,33 @@
 "use client";
 
-import React, { Suspense, useRef, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { getCoverData, parseCoverNumber } from "./data";
 
 const InstallPageContent: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const playingRef = useRef(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const searchParams = useSearchParams();
 
   const hasCode = searchParams.has("code");
   const inviteCode = searchParams.get("code") || "";
+
+  // 根据 coverNumber 获取对应封面和视频（兼容大小写）
+  const coverData = useMemo(() => {
+    const coverNumber = searchParams.get("coverNumber") || searchParams.get("covernumber");
+    const index = parseCoverNumber(coverNumber);
+    return getCoverData(index);
+  }, [searchParams]);
+
+  // 切换模板时重置视频状态
+  useEffect(() => {
+    setVideoReady(false);
+    setPlaying(false);
+    playingRef.current = false;
+  }, [coverData]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(inviteCode).then(() => {
@@ -36,15 +53,17 @@ const InstallPageContent: React.FC = () => {
     if (video.paused) {
       video.muted = true;
       video.play().then(() => {
+        playingRef.current = true;
         setPlaying(true);
       }).catch((err) => {
         console.error("Video play failed:", err);
-        // fallback: show controls so user can tap again
         video.controls = true;
+        playingRef.current = true;
         setPlaying(true);
       });
     } else {
       video.pause();
+      playingRef.current = false;
       setPlaying(false);
     }
   };
@@ -117,14 +136,19 @@ const InstallPageContent: React.FC = () => {
         aspectRatio: "3 / 4",
       }}>
         <video
+          key={coverData.videoHD}
           ref={videoRef}
-          src="https://res.kortai.info/filters/videos/20260606/bc8df653-99a9-4f6c-8352-f656dcedc10b.mp4"
+          src={coverData.videoHD}
           playsInline
           muted
-          preload="auto"
-          onEnded={() => setPlaying(false)}
-          onPause={() => setPlaying(false)}
-          onPlay={() => setPlaying(true)}
+          preload="metadata"
+          controlsList="nodownload"
+          disablePictureInPicture
+          onContextMenu={(e) => e.preventDefault()}
+          onLoadedData={() => setVideoReady(true)}
+          onEnded={() => { playingRef.current = false; setPlaying(false); }}
+          onPause={() => { if (playingRef.current) { playingRef.current = false; setPlaying(false); } }}
+          onPlay={() => { playingRef.current = true; setPlaying(true); }}
           style={{
             position: "absolute",
             top: 0,
@@ -132,14 +156,15 @@ const InstallPageContent: React.FC = () => {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            zIndex: 1,
-            opacity: playing ? 1 : 0,
+            zIndex: 2,
+            opacity: playing && videoReady ? 1 : 0,
             transition: "opacity 0.3s ease",
+            userSelect: "none",
           }}
         />
         {/* Cover Image */}
         <img
-          src="https://res.kortai.info/filters/images/20260606/8fd1767d-2f98-4be9-bcd0-1b89cbd04331.webp"
+          src={coverData.image}
           alt="Kort AI Demo"
           onClick={handleVideoToggle}
           style={{
@@ -149,14 +174,14 @@ const InstallPageContent: React.FC = () => {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            zIndex: playing ? 0 : 2,
+            zIndex: (playing && videoReady) ? 0 : 3,
             cursor: "pointer",
             transition: "opacity 0.3s ease",
-            opacity: playing ? 0 : 1,
+            opacity: (playing && videoReady) ? 0 : 1,
           }}
         />
         {/* Play button overlay */}
-        {!playing && (
+        {(!playing || !videoReady) && (
           <div
             onClick={handleVideoToggle}
             style={{
@@ -174,7 +199,7 @@ const InstallPageContent: React.FC = () => {
               justifyContent: "center",
               border: "2px solid rgba(255,255,255,0.2)",
               cursor: "pointer",
-              zIndex: 3,
+              zIndex: 4,
             }}
           >
             <svg width="22" height="24" viewBox="0 0 22 24" fill="#fff">
@@ -218,7 +243,7 @@ const InstallPageContent: React.FC = () => {
             marginLeft: "12px",
           }}>
             <img
-              src="https://api.qrserver.com/v1/create-qr-code/?size=52x52&data=https://kortai.info/install"
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=52x52&data=${encodeURIComponent(`https://kortai.info/install?code=${inviteCode}${searchParams.get("coverNumber") ? `&coverNumber=${searchParams.get("coverNumber")}` : ""}`)}`}
               alt="QR Code"
               style={{ width: "100%", height: "100%", display: "block" }}
             />
