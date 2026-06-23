@@ -38,6 +38,8 @@ const InstallPageContent: React.FC = () => {
 
   const handleDownload = () => {
     const userAgent = typeof navigator === "undefined" ? "" : navigator.userAgent;
+    // 先复制邀请码到剪切板
+    navigator.clipboard.writeText(`kortai_invite:${inviteCode}`).catch(() => {});
     if (/iPhone|iPad|iPod/i.test(userAgent)) {
       window.location.href = "https://apps.apple.com/app/kort-ai/id6756208165";
     } else if (/Android/i.test(userAgent)) {
