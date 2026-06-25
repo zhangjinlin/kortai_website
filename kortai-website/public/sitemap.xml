@@ -5,7 +5,23 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://kortai.info/about-us</loc>
+    <loc>https://kortai.info/about-us/</loc>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kortai.info/privacy-policy/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://kortai.info/terms-of-service/</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://kortai.info/contact/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://kortai.info/install/</loc>
+    <priority>0.7</priority>
   </url>
 </urlset>

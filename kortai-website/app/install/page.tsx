@@ -318,8 +318,8 @@ const InstallPageContent: React.FC = () => {
         </button>
       </div>
 
-      {/* Floating View Button (bottom right) */}
-      <div style={{
+      {/* Floating Download Button (bottom right) */}
+      <div onClick={handleDownload} style={{
         position: "fixed",
         bottom: "24px",
         right: "24px",
