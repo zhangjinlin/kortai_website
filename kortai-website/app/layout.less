@@ -1,0 +1,100 @@
+// ============================================================
+// 全局布局样式（app/layout.less）
+// 顶部导航栏 + 全局底部，作用于所有页面
+// ============================================================
+
+// ---------------- 顶部导航 ----------------
+// nav 为 fixed 定位，下方需要 .site-nav__spacer 占位撑开高度
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 40px;
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  // 左侧 Logo
+  &__logo {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__logo-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+  }
+
+  // 右侧链接组
+  &__links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  &__link {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  // 固定导航的占位块（高度需与导航实际高度一致）
+  &__spacer {
+    height: 56px;
+  }
+}
+
+// ---------------- 全局底部 ----------------
+.site-footer {
+  background: #111;
+  padding: 32px 40px;
+  border-top: 1px solid #222;
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    color: #888;
+    font-size: 13px;
+  }
+
+  &__links {
+    display: flex;
+    gap: 24px;
+  }
+
+  &__link {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}

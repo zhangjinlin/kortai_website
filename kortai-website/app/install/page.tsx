@@ -3,6 +3,7 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getCoverData, parseCoverNumber } from "./data";
+import "./page.less";
 
 const InstallPageContent: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -70,57 +71,29 @@ const InstallPageContent: React.FC = () => {
     }
   };
 
+  // 视频是否已淡入显示
+  const videoVisible = playing && videoReady;
+
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "#0a0f0a",
-      color: "#fff",
-      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif",
-      display: "flex",
-      flexDirection: "column",
-      padding: "0 20px",
-      maxWidth: "480px",
-      margin: "0 auto",
-      position: "relative",
-    }}>
+    <div className="install">
       {/* Logo */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "8px",
-        paddingTop: "40px",
-      }}>
+      <div className="install__logo">
         <img
           src="/logo_icon.png"
           alt="Kort AI"
-          style={{ width: "40px", height: "40px", borderRadius: "10px" }}
+          className="install__logo-img"
         />
-        <span style={{ fontSize: "22px", fontWeight: 700 }}>Kort.ai</span>
+        <span className="install__logo-name">Kort.ai</span>
       </div>
 
       {/* Title & Subtitle */}
-      <div style={{ textAlign: "center", paddingTop: "28px" }}>
-        <h1 style={{
-          fontSize: "26px",
-          fontWeight: 800,
-          lineHeight: 1.35,
-          margin: "0 0 10px",
-          background: "linear-gradient(90deg, #46D3A9 0%, #7BDC7F 50%, #C6E857 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          color: "transparent",
-        }}>
+      <div className="install__head">
+        <h1 className="install__title">
           Try Kort AI and Get
           <br />
           Free Rewards!
         </h1>
-        <p style={{
-          fontSize: "14px",
-          color: "#a1a1aa",
-          lineHeight: 1.6,
-          margin: "0",
-        }}>
+        <p className="install__subtitle">
           Try all the amazing AI video/image models
           <br />
           and tools. Get up to 100 free credits!
@@ -128,15 +101,7 @@ const InstallPageContent: React.FC = () => {
       </div>
 
       {/* Demo Video */}
-      <div style={{
-        marginTop: "24px",
-        position: "relative",
-        borderRadius: "16px",
-        overflow: "hidden",
-        background: "linear-gradient(180deg, rgba(70,211,169,0.08) 0%, rgba(198,232,87,0.08) 100%)",
-        border: "1px solid rgba(70,211,169,0.15)",
-        aspectRatio: "3 / 4",
-      }}>
+      <div className="install__video">
         <video
           key={coverData.videoHD}
           ref={videoRef}
@@ -151,59 +116,20 @@ const InstallPageContent: React.FC = () => {
           onEnded={() => { playingRef.current = false; setPlaying(false); }}
           onPause={() => { if (playingRef.current) { playingRef.current = false; setPlaying(false); } }}
           onPlay={() => { playingRef.current = true; setPlaying(true); }}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: 2,
-            opacity: playing && videoReady ? 1 : 0,
-            transition: "opacity 0.3s ease",
-            userSelect: "none",
-          }}
+          className={`install__video-el ${videoVisible ? "is-playing" : ""}`}
         />
+
         {/* Cover Image */}
         <img
           src={coverData.image}
           alt="Kort AI Demo"
           onClick={handleVideoToggle}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: (playing && videoReady) ? 0 : 3,
-            cursor: "pointer",
-            transition: "opacity 0.3s ease",
-            opacity: (playing && videoReady) ? 0 : 1,
-          }}
+          className={`install__cover ${videoVisible ? "is-hidden" : ""}`}
         />
+
         {/* Play button overlay */}
-        {(!playing || !videoReady) && (
-          <div
-            onClick={handleVideoToggle}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "56px",
-              height: "56px",
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.15)",
-              backdropFilter: "blur(8px)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "2px solid rgba(255,255,255,0.2)",
-              cursor: "pointer",
-              zIndex: 4,
-            }}
-          >
+        {!videoVisible && (
+          <div onClick={handleVideoToggle} className="install__play">
             <svg width="22" height="24" viewBox="0 0 22 24" fill="#fff">
               <path d="M0 0v24l22-12z"/>
             </svg>
@@ -212,80 +138,46 @@ const InstallPageContent: React.FC = () => {
       </div>
 
       {/* Bottom Card */}
-      <div style={{
-        marginTop: "20px",
-        padding: "20px",
-        background: "rgba(255,255,255,0.04)",
-        borderRadius: "16px",
-        border: "1px solid rgba(255,255,255,0.06)",
-      }}>
+      <div className="install__card">
         {/* Header row: Logo + text + QR */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1 }}>
+        <div className="install__card-head">
+          <div className="install__card-brand">
             <img
               src="/logo_icon.png"
               alt="Kort AI"
-              style={{ width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0 }}
+              className="install__card-logo"
             />
             <div>
-              <span style={{ fontSize: "15px", fontWeight: 700 }}>Kort.ai</span>
-              <p style={{ fontSize: "11px", color: "#a1a1aa", margin: "2px 0 0" }}>
+              <span className="install__card-name">Kort.ai</span>
+              <p className="install__card-slogan">
                 All-in-One Video & Image AI
               </p>
             </div>
           </div>
+
           {/* QR Code */}
-          <div style={{
-            width: "52px",
-            height: "52px",
-            background: "#fff",
-            borderRadius: "8px",
-            padding: "4px",
-            flexShrink: 0,
-            marginLeft: "12px",
-          }}>
+          <div className="install__qr">
             <img
               src={`https://api.qrserver.com/v1/create-qr-code/?size=52x52&data=${encodeURIComponent(`https://kortai.info/install?code=${inviteCode}${searchParams.get("coverNumber") ? `&coverNumber=${searchParams.get("coverNumber")}` : ""}`)}`}
               alt="QR Code"
-              style={{ width: "100%", height: "100%", display: "block" }}
+              className="install__qr-img"
             />
           </div>
         </div>
 
         {/* Invitation Code */}
         {hasCode && (
-          <div style={{ marginTop: "16px" }}>
-            <p style={{ fontSize: "12px", color: "#a1a1aa", marginBottom: "6px" }}>
+          <div className="install__invite">
+            <p className="install__invite-label">
               Invitation Code: {inviteCode}
             </p>
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "12px 16px",
-              background: "rgba(70,211,169,0.06)",
-              borderRadius: "10px",
-              border: "1px solid rgba(70,211,169,0.12)",
-            }}>
-              <span style={{ fontSize: "13px", color: "#a1a1aa", flex: 1 }}>
+            <div className="install__invite-box">
+              <span className="install__invite-text">
                 Copy the code to register, or download directly to get 50 credits.
               </span>
               <button
                 onClick={handleCopy}
-                style={{
-                  padding: "6px 16px",
-                  backgroundColor: copied ? "#16a34a" : "rgba(70,211,169,0.15)",
-                  color: copied ? "#fff" : "#46D3A9",
-                  border: `1px solid ${copied ? "#22c55e" : "rgba(70,211,169,0.3)"}`,
-                  borderRadius: "8px",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  cursor: "pointer",
-                  whiteSpace: "nowrap",
-                  marginLeft: "12px",
-                  minWidth: "70px",
-                  textAlign: "center",
-                }}
+                className={`install__copy-btn ${copied ? "is-copied" : ""}`}
               >
                 {copied ? "Copied ✓" : "Copy"}
               </button>
@@ -295,45 +187,17 @@ const InstallPageContent: React.FC = () => {
       </div>
 
       {/* Spacer */}
-      <div style={{ flex: 1 }} />
+      <div className="install__spacer" />
 
       {/* Download Button */}
-      <div style={{ padding: "20px 0 40px" }}>
-        <button
-          onClick={handleDownload}
-          style={{
-            width: "100%",
-            padding: "16px 0",
-            background: "linear-gradient(135deg, #46D3A9, #C6E857)",
-            color: "#000",
-            border: "none",
-            borderRadius: "14px",
-            fontSize: "17px",
-            fontWeight: 700,
-            cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(70,211,169,0.35)",
-          }}
-        >
+      <div className="install__download">
+        <button onClick={handleDownload} className="install__download-btn">
           Download Kort AI Now
         </button>
       </div>
 
       {/* Floating Download Button (bottom right) */}
-      <div onClick={handleDownload} style={{
-        position: "fixed",
-        bottom: "24px",
-        right: "24px",
-        width: "52px",
-        height: "52px",
-        background: "linear-gradient(135deg, #46D3A9, #C6E857)",
-        borderRadius: "50%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        boxShadow: "0 4px 16px rgba(70,211,169,0.4)",
-        cursor: "pointer",
-        zIndex: 100,
-      }}>
+      <div onClick={handleDownload} className="install__fab">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="2" y="6" width="20" height="12" rx="2"/>
           <path d="M12 12v6M9 15l3 3 3-3"/>
@@ -345,7 +209,7 @@ const InstallPageContent: React.FC = () => {
 
 const InstallPage: React.FC = () => {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#0a0f0a" }} />}>
+    <Suspense fallback={<div className="install__fallback" />}>
       <InstallPageContent />
     </Suspense>
   );

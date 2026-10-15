@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import "./layout.less";
 
 export const metadata: Metadata = {
   title: {
@@ -33,75 +34,37 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">
+      <body>
         {/* Navigation Bar */}
-        <nav style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          background: "rgba(0,0,0,0.85)",
-          backdropFilter: "blur(12px)",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
-          padding: "12px 40px",
-        }}>
-          <div style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}>
-            <Link href="/" style={{
-              color: "#fff",
-              fontSize: "20px",
-              fontWeight: 700,
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}>
-              <img src="/logo_icon.png" alt="Kort AI" style={{ width: "28px", height: "28px", borderRadius: "6px" }} />
+        <nav className="site-nav">
+          <div className="site-nav__inner">
+            <Link href="/" className="site-nav__logo">
+              <img src="/logo_icon.png" alt="Kort AI" className="site-nav__logo-img" />
               Kort AI
             </Link>
-            <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
-              <Link href="/blog" style={{ color: "#ccc", textDecoration: "none", fontSize: "14px" }}>Blog</Link>
-              <Link href="/about-us" style={{ color: "#ccc", textDecoration: "none", fontSize: "14px" }}>About</Link>
-              <Link href="/contact" style={{ color: "#ccc", textDecoration: "none", fontSize: "14px" }}>Contact</Link>
-              <Link href="/privacy-policy" style={{ color: "#ccc", textDecoration: "none", fontSize: "14px" }}>Privacy</Link>
-              <Link href="/terms-of-service" style={{ color: "#ccc", textDecoration: "none", fontSize: "14px" }}>Terms</Link>
+            <div className="site-nav__links">
+              <Link href="/blog" className="site-nav__link">Blog</Link>
+              <Link href="/about-us" className="site-nav__link">About</Link>
+              <Link href="/contact" className="site-nav__link">Contact</Link>
+              <Link href="/privacy-policy" className="site-nav__link">Privacy</Link>
+              <Link href="/terms-of-service" className="site-nav__link">Terms</Link>
             </div>
           </div>
         </nav>
 
         {/* Spacer for fixed nav */}
-        <div style={{ height: "56px" }} />
+        <div className="site-nav__spacer" />
 
         {children}
 
         {/* Global Footer */}
-        <footer style={{
-          background: "#111",
-          padding: "32px 40px",
-          borderTop: "1px solid #222",
-        }}>
-          <div style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "16px",
-            color: "#888",
-            fontSize: "13px",
-          }}>
+        <footer className="site-footer">
+          <div className="site-footer__inner">
             <span>&copy; 2025 Kort AI. All rights reserved.</span>
-            <div style={{ display: "flex", gap: "24px" }}>
-              <Link href="/privacy-policy" style={{ color: "#888", textDecoration: "none" }}>Privacy Policy</Link>
-              <Link href="/terms-of-service" style={{ color: "#888", textDecoration: "none" }}>Terms of Service</Link>
-              <Link href="/contact" style={{ color: "#888", textDecoration: "none" }}>Contact</Link>
+            <div className="site-footer__links">
+              <Link href="/privacy-policy" className="site-footer__link">Privacy Policy</Link>
+              <Link href="/terms-of-service" className="site-footer__link">Terms of Service</Link>
+              <Link href="/contact" className="site-footer__link">Contact</Link>
             </div>
           </div>
         </footer>

@@ -1,0 +1,40 @@
+// ============================================================
+// About Us 页面样式（app/about-us/page.less）
+// 文字颜色与页面背景沿用 globals.css 中 body 的设置
+// ============================================================
+
+.about {
+  font-family: Arial, sans-serif;
+  padding: 40px;
+  max-width: 800px;
+  margin: auto;
+
+  // 主标题 "What is Kort AI?"
+  &__title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+
+  // 各小节 h2 标题
+  &__subtitle {
+    font-size: 32px;
+    margin-top: 40px;
+  }
+
+  // 下载按钮
+  &__btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #0070f3;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.15s;
+
+    &:hover {
+      background-color: #005bb5;
+    }
+  }
+}

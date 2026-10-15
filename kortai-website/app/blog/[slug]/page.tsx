@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { blogPosts, type BlogPost } from "../posts";
+import "./page.less";
 
 // 为静态导出生成所有文章页面
 export function generateStaticParams() {
@@ -46,18 +47,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
 
+  // 文章不存在
   if (!post) {
     return (
-      <main style={{
-        fontFamily: "Arial, sans-serif",
-        padding: "80px 40px",
-        textAlign: "center",
-        color: "#e5e5e5",
-        minHeight: "100vh",
-      }}>
-        <h1 style={{ color: "#fff", fontSize: "32px" }}>Article Not Found</h1>
-        <p style={{ color: "#888", marginTop: "12px" }}>The article you&apos;re looking for doesn&apos;t exist.</p>
-        <Link href="/blog" style={{ color: "#46D3A9", marginTop: "24px", display: "inline-block" }}>
+      <main className="blog-notfound">
+        <h1 className="blog-notfound__title">Article Not Found</h1>
+        <p className="blog-notfound__desc">The article you&apos;re looking for doesn&apos;t exist.</p>
+        <Link href="/blog" className="blog-notfound__link">
           ← Back to Blog
         </Link>
       </main>
@@ -97,108 +93,48 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main style={{
-        fontFamily: "Arial, sans-serif",
-        padding: "60px 40px",
-        maxWidth: "800px",
-        margin: "0 auto",
-        color: "#e5e5e5",
-        minHeight: "100vh",
-      }}>
+      <main className="blog-post">
         {/* Back link */}
-      <Link
-        href="/blog"
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "6px",
-          color: "#888",
-          textDecoration: "none",
-          fontSize: "14px",
-          marginBottom: "32px",
-        }}
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
-        Back to Blog
-      </Link>
+        <Link href="/blog" className="blog-post__back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Back to Blog
+        </Link>
 
-      {/* Article Header */}
-      <header style={{ marginBottom: "40px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px", flexWrap: "wrap" }}>
-          <time style={{
-            fontSize: "13px",
-            color: "#666",
-            background: "rgba(255,255,255,0.05)",
-            padding: "4px 10px",
-            borderRadius: "4px",
-          }}>
-            {post.date}
-          </time>
-          {post.tags?.map((tag) => (
-            <span key={tag} style={{
-              fontSize: "12px",
-              color: "#46D3A9",
-              background: "rgba(70,211,169,0.08)",
-              padding: "4px 10px",
-              borderRadius: "4px",
-            }}>
-              {tag}
-            </span>
-          ))}
+        {/* Article Header */}
+        <header className="blog-post__header">
+          <div className="blog-post__meta">
+            <time className="blog-post__date">
+              {post.date}
+            </time>
+            {post.tags?.map((tag) => (
+              <span key={tag} className="blog-post__tag">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <h1 className="blog-post__title">
+            {post.title}
+          </h1>
+        </header>
+
+        {/* Article Content */}
+        <article
+          className="blog-content blog-post__content"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+
+        {/* Bottom Navigation */}
+        <div className="blog-post__nav">
+          <Link href="/blog" className="blog-post__nav-prev">
+            ← All Articles
+          </Link>
+          <Link href="/" className="blog-post__nav-next">
+            Home →
+          </Link>
         </div>
-        <h1 style={{
-          fontSize: "clamp(24px, 4vw, 36px)",
-          fontWeight: "bold",
-          color: "#fff",
-          lineHeight: 1.3,
-          margin: 0,
-        }}>
-          {post.title}
-        </h1>
-      </header>
-
-      {/* Article Content */}
-      <article
-        className="blog-content"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-        style={{
-          lineHeight: 1.9,
-          fontSize: "16px",
-        }}
-      />
-
-      {/* Bottom Navigation */}
-      <div style={{
-        marginTop: "60px",
-        paddingTop: "32px",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
-        display: "flex",
-        justifyContent: "space-between",
-      }}>
-        <Link
-          href="/blog"
-          style={{
-            color: "#46D3A9",
-            textDecoration: "none",
-            fontSize: "14px",
-          }}
-        >
-          ← All Articles
-        </Link>
-        <Link
-          href="/"
-          style={{
-            color: "#888",
-            textDecoration: "none",
-            fontSize: "14px",
-          }}
-        >
-          Home →
-        </Link>
-      </div>
-    </main>
+      </main>
     </>
   );
 }

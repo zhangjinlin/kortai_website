@@ -1,0 +1,1656 @@
+// ============================================================
+// Kort AI 首页样式（app/page.less）
+// 结构见 app/page.tsx，本文件按页面区块从上到下组织
+// 断点：sm = 640px（平板），lg = 1024px（桌面）
+// ============================================================
+
+// ---------- 颜色变量 ----------
+@bg: #050511; // 页面主背景
+@bg-alt: #08081a; // 交替区块背景（Tools 区）
+@card: #0a0a1a; // 卡片背景
+@input: #15182c; // 输入框 / 缩略图背景（更灰蓝）
+
+@pink: #ec4899; // pink-500
+@purple: #a855f7; // purple-500
+@purple600: #9333ea; // purple-600
+@fuchsia: #d946ef; // fuchsia-500
+@blue: #3b82f6; // blue-500
+
+@text: #ffffff;
+@gray200: #e5e7eb;
+@gray300: #d1d5db;
+@gray400: #9ca3af;
+@gray500: #6b7280;
+@gray600: #4b5563;
+
+@border-light: rgba(255, 255, 255, 0.1);
+@border-mid: rgba(255, 255, 255, 0.15);
+
+// ---------- 复用渐变 ----------
+.grad-brand() {
+    background: linear-gradient(to right, @pink, @purple600);
+}
+
+.grad-hero-btn() {
+    background: linear-gradient(to right, @blue, @purple, @pink);
+}
+
+.grad-text-strong() {
+    background: linear-gradient(to right, @pink, @fuchsia, @purple);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.grad-text-soft() {
+    background: linear-gradient(to right, #f472b6, #c084fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+// ============================================================
+// 根容器
+// ============================================================
+.home {
+    min-height: 100vh;
+    background: @bg;
+    color: @text;
+    overflow-x: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+// ============================================================
+// 顶部导航
+// ============================================================
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: transparent;
+
+    &__inner {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 16px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        @media (min-width: 640px) {
+            padding: 0 24px;
+        }
+    }
+
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+    }
+
+    &__logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 20px;
+        font-weight: 700;
+        color: @text;
+        text-decoration: none;
+    }
+
+    &__logo-mark {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(to bottom right, @pink, @purple600);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: @text;
+    }
+
+    &__logo-text {
+        color: @text;
+    }
+
+    // 导航链接：仅桌面端显示
+    &__links {
+        display: none;
+
+        @media (min-width: 1024px) {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            font-size: 14px;
+        }
+    }
+
+    &__link {
+        color: @gray200;
+        text-decoration: none;
+        transition: color 0.15s;
+
+        &:hover {
+            color: @text;
+        }
+
+        &--active {
+            color: @text;
+            font-weight: 500;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 14px;
+    }
+
+    // 语言切换：仅平板以上显示
+    &__lang {
+        display: none;
+        align-items: center;
+        gap: 4px;
+
+        @media (min-width: 640px) {
+            display: flex;
+            color: @gray200;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+
+            &:hover {
+                color: @text;
+            }
+        }
+    }
+
+    // 登录：仅平板以上显示
+    &__signin {
+        display: none;
+
+        @media (min-width: 640px) {
+            display: block;
+            padding: 8px 16px;
+            color: @gray200;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.15s;
+
+            &:hover {
+                color: @text;
+            }
+        }
+    }
+
+    &__cta {
+        padding: 8px 20px;
+        border-radius: 9999px;
+        .grad-brand();
+        color: @text;
+        font-weight: 500;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.15s;
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+}
+
+// ============================================================
+// Hero 轮播
+// ============================================================
+.hero {
+    position: relative;
+    width: 100%;
+    height: 38vh; // 手机端用视口高度，图片居中裁切
+    overflow: hidden;
+
+    @media (min-width: 640px) {
+        height: 45vh;
+    }
+
+    @media (min-width: 1024px) {
+        height: auto;
+        aspect-ratio: 1942 / 809; // 桌面端严格按 banner 原图比例 1942x809
+    }
+
+    // ---- 轮播图片轨道 ----
+    &__slides {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        transition: transform 0.7s ease-out;
+    }
+
+    &__slide {
+        position: relative;
+        min-width: 100%;
+        height: 100%;
+    }
+
+    &__slide-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    // ---- 渐变遮罩 ----
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        pointer-events: none;
+
+        // 左侧压暗保证白字可读；桌面端只覆盖左半屏，右边保留原图颜色
+        &--left {
+            background: linear-gradient(to right,
+                    rgba(5, 5, 17, 0.8) 0%,
+                    rgba(5, 5, 17, 0.25) 50%,
+                    transparent 100%);
+
+            @media (min-width: 1024px) {
+                width: 50%;
+            }
+        }
+
+        // 底部轻微压暗
+        &--bottom {
+            background: linear-gradient(to top,
+                    rgba(5, 5, 17, 0.45) 0%,
+                    transparent 50%,
+                    transparent 100%);
+        }
+    }
+
+    // ---- 文字内容区 ----
+    &__content {
+        position: relative;
+        z-index: 20;
+        height: 100%;
+        max-width: 1536px;
+        margin: 0 auto;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+
+        @media (min-width: 640px) {
+            padding: 0 24px;
+        }
+
+        @media (min-width: 1024px) {
+            padding: 0 40px; // 与下方 .generator 区块左内边距一致
+        }
+    }
+
+    &__grid {
+        display: grid;
+        gap: 32px;
+        align-items: center;
+        width: 100%;
+
+        @media (min-width: 1024px) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    // 左侧文字：padding-left 对齐下方卡片内边距，使标题左边缘对齐
+    &__left {
+        max-width: 576px;
+        padding-left: 24px; // 对应 .generator__card 的 p-6
+
+        @media (min-width: 640px) {
+            padding-left: 32px; // 对应 .generator__card 的 sm:p-8
+        }
+    }
+
+    &__title {
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.08;
+        margin: 0 0 20px;
+
+        @media (min-width: 640px) {
+            font-size: 48px;
+        }
+
+        @media (min-width: 1024px) {
+            font-size: 64px;
+        }
+    }
+
+    &__title-accent {
+        .grad-text-strong();
+    }
+
+    &__desc {
+        color: rgba(229, 231, 235, 0.9);
+        font-size: 16px;
+        margin: 0 0 28px;
+        max-width: 448px;
+        line-height: 1.625;
+
+        @media (min-width: 640px) {
+            font-size: 18px;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    &__btn {
+        padding: 14px 28px;
+        border-radius: 9999px;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s;
+
+        &--primary {
+            .grad-hero-btn();
+            color: #fff;
+            font-weight: 600;
+
+            &:hover {
+                box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.3);
+            }
+        }
+
+        &--ghost {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            color: #fff;
+            font-weight: 500;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+
+    // ---- App Store / Google Play 徽章 ----
+    &__badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    &__badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid @border-light;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: background 0.15s;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+    }
+
+    &__badge-text {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    &__badge-label {
+        font-size: 10px;
+        color: @gray400;
+        line-height: 1;
+    }
+
+    &__badge-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        margin-top: -2px;
+    }
+
+    // 右侧装饰位（手写标注等，暂留空）
+    &__right {
+        display: none;
+
+        @media (min-width: 1024px) {
+            display: block;
+            position: relative;
+            min-height: 420px;
+        }
+    }
+
+    // ---- 轮播指示点 ----
+    &__dots {
+        position: absolute;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    &__dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 9999px;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.3);
+        transition: all 0.3s;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        &--active {
+            width: 32px;
+            .grad-brand();
+        }
+    }
+}
+
+// ============================================================
+// Try AI Video Generator（压在 banner 底部）
+// ============================================================
+.generator {
+    position: relative;
+    z-index: 30;
+    margin-top: -64px; // 向上覆盖 banner 底部
+    padding: 0 16px 40px;
+
+    @media (min-width: 640px) {
+        margin-top: -96px;
+        padding: 0 24px 40px;
+    }
+
+    @media (min-width: 1024px) {
+        margin-top: -40px;
+        padding: 0 40px 40px;
+    }
+
+    &__inner {
+        max-width: 1536px;
+        margin: 0 auto;
+    }
+
+    &__card {
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(22, 18, 55, 0.95), rgba(12, 12, 35, 0.95));
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 24px;
+        box-shadow: 0 25px 50px -12px rgba(88, 28, 135, 0.25);
+
+        @media (min-width: 640px) {
+            padding: 32px;
+        }
+    }
+
+    // ---- 标题 + 标签页（限制在左大列内） ----
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        @media (min-width: 1024px) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 4px;
+        color: #fff;
+
+        @media (min-width: 640px) {
+            font-size: 30px;
+        }
+    }
+
+    &__title-accent {
+        background: linear-gradient(90deg, #f43f5e 0%, #a855f7 50%, #60a5fa 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    &__desc {
+        color: @gray400;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    &__tabs {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 4px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    &__tab {
+        position: relative;
+        padding: 8px 14px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s;
+        border: 2px solid transparent;
+        background: transparent;
+        color: @gray300;
+
+        @media (min-width: 640px) {
+            font-size: 14px;
+        }
+
+        &:hover {
+            color: @text;
+        }
+
+        // 选中态：渐变彩色边框 + 中间深色背景（光圈效果）
+        &--active {
+            color: #fff;
+            background:
+                linear-gradient(135deg, rgba(22, 18, 55, 0.95), rgba(12, 12, 35, 0.95)) padding-box,
+                linear-gradient(90deg, @blue, @purple, @pink) border-box;
+            box-shadow: 0 0 16px rgba(168, 85, 247, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+    }
+
+    // ---- 主体两栏工作区 ----
+    &__body {
+        display: grid;
+        gap: 20px;
+
+        @media (min-width: 1024px) {
+            grid-template-columns: 4fr 1fr; // 左大列（上传+输入/控制） : 右预览列
+        }
+    }
+
+    &__col {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        // 左大列：标题/tabs + 上传/输入/控制
+        &--left {
+            @media (min-width: 1024px) {
+                gap: 20px;
+            }
+        }
+
+        // 右栏：预览
+        &--preview {
+            min-height: 340px;
+        }
+    }
+
+    // 上传区 + 输入/控制区并排
+    &__work {
+        display: grid;
+        gap: 16px;
+
+        @media (min-width: 1024px) {
+            grid-template-columns: minmax(140px, 2fr) 6fr;
+            align-items: stretch;
+        }
+    }
+
+    // 左大列内的右侧区域：输入框 + 控制项
+    &__main {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    // ---- 上传区（左右布局：左图 + 右信息） ----
+    &__upload {
+        height: 180px; // 改成你想要的高度
+        min-height: 180px;
+        border-radius: 16px;
+        border: 1.5px dashed rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.03);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.15s;
+
+        &:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+    }
+
+    &__upload-preview {
+        width: 80px;
+        aspect-ratio: 1 / 1.25;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid @border-light;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__upload-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    &__upload-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid @border-light;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    &__upload-text {
+        font-size: 14px;
+        font-weight: 500;
+        color: #fff;
+        margin: 0;
+    }
+
+    &__upload-hint {
+        font-size: 12px;
+        color: @gray500;
+        margin: 0;
+    }
+
+    // ---- 提示词输入框 ----
+    &__input {
+        flex: 1;
+        min-height: 80px;
+        border-radius: 16px;
+        background: @input;
+        border: 1px solid @border-light;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__textarea {
+        flex: 1;
+        background: transparent;
+        resize: none;
+        outline: none;
+        border: none;
+        font-size: 14px;
+        color: #fff;
+        font-family: inherit;
+
+        &::placeholder {
+            color: @gray500;
+        }
+    }
+
+    &__input-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        color: @gray500;
+        margin-top: 8px;
+    }
+
+    &__input-at {
+        color: @gray600;
+    }
+
+    // ---- 模型/比例/时长/清晰度 控制项 + 生成按钮（同一行） ----
+    &__controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    &__control {
+        flex: 1 1 0;
+        min-width: 120px;
+        border-radius: 12px;
+        background: @input;
+        border: 1px solid @border-light;
+        padding: 12px;
+        cursor: pointer;
+        transition: border-color 0.15s;
+
+        &:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+    }
+
+    &__control-label {
+        display: block;
+        font-size: 11px;
+        color: @gray400;
+        margin-bottom: 6px;
+    }
+
+    &__control-value {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #fff;
+
+        svg {
+            width: 18px;
+            height: 18px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+    }
+
+    &__control-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__control-arrow {
+        margin-left: auto;
+        width: 16px;
+        height: 16px;
+        color: @gray500;
+        flex-shrink: 0;
+    }
+
+    // ---- 生成按钮 ----
+    &__btn {
+        width: 100%;
+        padding: 14px 0;
+        border-radius: 9999px;
+        .grad-hero-btn();
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s;
+
+        &:hover {
+            box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.3);
+        }
+
+        // 与控制项同一行的短按钮
+        &--inline {
+            flex: 1 1 0;
+            min-width: 140px;
+            padding: 12px;
+            border-radius: 12px;
+            height: auto;
+        }
+    }
+
+    // ---- 生成结果预览 ----
+    &__preview {
+        position: relative;
+        flex: 1;
+        min-height: 340px;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid @border-light;
+        background: @input;
+    }
+
+    &__preview-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.8;
+    }
+
+    &__thumbs {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__thumb {
+        width: 52px;
+        height: 52px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    // 手写标注 "From image to video"
+    &__handwrite {
+        position: absolute;
+        left: 12px;
+        top: 12px;
+        color: #fff;
+        font-size: 16px;
+        line-height: 1.2;
+        font-family: "Brush Script MT", "Segoe Script", cursive;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+        white-space: nowrap;
+        z-index: 2;
+
+        // 手写弯曲箭头指向预览图
+        &::after {
+            content: "";
+            position: absolute;
+            right: -50px;
+            top: 28px;
+            width: 48px;
+            height: 36px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 36' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4c10 22 28 30 40 20'/%3E%3Cpath d='M34 18l10 6-6 8'/%3E%3C/svg%3E") no-repeat center / contain;
+            transform: rotate(-6deg);
+        }
+    }
+}
+
+// ============================================================
+// Stunning AI Videos（作品展示）
+// ============================================================
+.explore {
+    position: relative;
+    padding: 64px 16px;
+
+    @media (min-width: 640px) {
+        padding: 64px 24px;
+    }
+
+    &__inner {
+        max-width: 1536px;
+        margin: 0 auto;
+    }
+
+    // ---- 标题栏 ----
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
+
+        @media (min-width: 640px) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+
+        @media (min-width: 640px) {
+            font-size: 30px;
+        }
+    }
+
+    &__title-accent {
+        .grad-text-soft();
+    }
+
+    &__more {
+        font-size: 14px;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: color 0.15s;
+
+        &:hover {
+            color: #d8b4fe;
+        }
+    }
+
+    // ---- 分类标签 ----
+    &__cats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    &__cat {
+        padding: 8px 16px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s;
+        border: 1px solid @border-mid;
+        background: transparent;
+        color: @gray300;
+
+        @media (min-width: 640px) {
+            font-size: 14px;
+        }
+
+        &:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: @text;
+        }
+
+        &--active {
+            .grad-brand();
+            color: #fff;
+            border: none;
+            box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.2);
+        }
+    }
+
+    // ---- 横向滚动画廊 ----
+    &__gallery {
+        position: relative;
+
+        // 鼠标悬浮时才显示左右箭头
+        &:hover {
+            .gallery__arrow {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+// 画廊左右滚动箭头
+.gallery {
+    &__arrow {
+        display: none;
+        position: absolute;
+        top: 50%;
+        z-index: 10;
+        width: 40px;
+        height: 40px;
+        border-radius: 9999px;
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid @border-light;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.15s;
+
+        @media (min-width: 1024px) {
+            display: flex;
+        }
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        &--left {
+            left: 0;
+
+            @media (min-width: 1024px) {
+                transform: translate(-16px, -50%);
+            }
+        }
+
+        &--right {
+            right: 0;
+
+            @media (min-width: 1024px) {
+                transform: translate(16px, -50%);
+            }
+        }
+    }
+
+    &__track {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding-bottom: 16px;
+        scroll-behavior: smooth;
+
+        // 隐藏滚动条
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+// 单个作品卡片
+.video-card {
+    position: relative;
+    flex-shrink: 0;
+    width: 150px;
+    aspect-ratio: 9 / 16;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    background: @input;
+
+    @media (min-width: 640px) {
+        width: 170px;
+    }
+
+    &__img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+
+    &:hover &__img {
+        transform: scale(1.05);
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top,
+                rgba(0, 0, 0, 0.8),
+                rgba(0, 0, 0, 0.1),
+                transparent);
+    }
+
+    &__play {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.15s;
+        font-size: 14px;
+        padding-left: 2px;
+    }
+
+    &:hover &__play {
+        opacity: 1;
+    }
+
+    &__views {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    &__views-icon {
+        font-size: 10px;
+    }
+}
+
+// ============================================================
+// Powerful AI Video Tools
+// ============================================================
+.tools {
+    position: relative;
+    padding: 64px 16px;
+    background: @bg-alt;
+
+    @media (min-width: 640px) {
+        padding: 64px 24px;
+    }
+
+    &__inner {
+        max-width: 1536px;
+        margin: 0 auto;
+    }
+
+    &__header {
+        margin-bottom: 32px;
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 8px;
+
+        @media (min-width: 640px) {
+            font-size: 30px;
+        }
+    }
+
+    &__title-accent {
+        .grad-text-soft();
+    }
+
+    &__desc {
+        color: @gray400;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 16px;
+
+        @media (min-width: 640px) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @media (min-width: 1024px) {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+    }
+}
+
+// 工具卡片
+.tool-card {
+    display: flex;
+    height: 130px;
+    border-radius: 16px;
+    background: @card;
+    border: 1px solid @border-light;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s;
+
+    &:hover {
+        border-color: rgba(168, 85, 247, 0.4);
+
+        .tool-card__img {
+            transform: scale(1.05);
+        }
+
+        .tool-card__arrow {
+            color: #fff;
+        }
+    }
+
+    // 左侧图片区
+    &__media {
+        width: 45%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    // 双图模式（Multi-Image）
+    &__imgs {
+        display: grid;
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        gap: 4px;
+        width: 100%;
+        height: 100%;
+        padding: 8px;
+    }
+
+    &__img-wrap {
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    &__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+
+    // 右侧文字区
+    &__body {
+        flex: 1;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @media (min-width: 640px) {
+            padding: 16px;
+        }
+    }
+
+    &__title {
+        font-weight: 600;
+        font-size: 14px;
+        margin: 0 0 4px;
+    }
+
+    &__desc {
+        color: @gray400;
+        font-size: 11px;
+        line-height: 1.625;
+        margin: 0 0 8px;
+    }
+
+    &__arrow {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.7);
+        transition: color 0.15s;
+        margin-top: auto;
+    }
+}
+
+// ============================================================
+// How It Works + Get Kort AI App（左右并排）
+// ============================================================
+.feature {
+    position: relative;
+    padding: 64px 16px;
+
+    @media (min-width: 640px) {
+        padding: 64px 24px;
+    }
+
+    &__inner {
+        max-width: 1536px;
+        margin: 0 auto;
+    }
+
+    &__grid {
+        display: grid;
+        gap: 24px;
+        align-items: stretch;
+
+        @media (min-width: 1024px) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}
+
+// ---- 左：How It Works ----
+.hiw {
+    border-radius: 24px;
+    background: rgba(10, 10, 26, 0.8);
+    border: 1px solid @border-light;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 640px) {
+        padding: 32px;
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 8px;
+
+        @media (min-width: 640px) {
+            font-size: 30px;
+        }
+    }
+
+    &__desc {
+        color: @gray400;
+        font-size: 14px;
+        margin: 0 0 24px;
+    }
+
+    &__steps {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+
+        @media (min-width: 640px) {
+            flex-direction: row;
+        }
+    }
+
+    &__step {
+        flex: 1;
+        text-align: center;
+    }
+
+    &__step-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 12px;
+        border-radius: 9999px;
+        background: linear-gradient(to bottom right, @purple, @pink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.2);
+    }
+
+    &__step-title {
+        font-weight: 600;
+        font-size: 14px;
+        margin: 0 0 4px;
+    }
+
+    &__step-desc {
+        color: @gray400;
+        font-size: 12px;
+        line-height: 1.625;
+        margin: 0;
+    }
+
+    // 步骤之间的虚线连接
+    &__connector {
+        display: none;
+
+        @media (min-width: 640px) {
+            display: block;
+            width: 40px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
+            align-self: flex-start;
+            margin-top: 24px;
+        }
+    }
+}
+
+// ---- 右：Get Kort AI App ----
+.app-cta {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    background: linear-gradient(to right, @purple600, @fuchsia, @pink);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @media (min-width: 640px) {
+        padding: 32px;
+    }
+
+    @media (min-width: 1024px) {
+        padding: 40px;
+    }
+
+    // 右侧高光
+    &__shine {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 66.666667%;
+        height: 100%;
+        background: linear-gradient(to left, rgba(255, 255, 255, 0.1), transparent);
+        pointer-events: none;
+    }
+
+    // 右下角光晕
+    &__glow {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 320px;
+        height: 320px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 9999px;
+        filter: blur(80px);
+        pointer-events: none;
+    }
+
+    &__content {
+        display: grid;
+        gap: 24px;
+        align-items: center;
+        position: relative;
+        z-index: 10;
+
+        @media (min-width: 1024px) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 8px;
+
+        @media (min-width: 640px) {
+            font-size: 30px;
+        }
+    }
+
+    &__desc {
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0 0 24px;
+        font-size: 14px;
+    }
+
+    &__badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    &__badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #000;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: background 0.15s;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+    }
+
+    &__badge-text {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    &__badge-label {
+        font-size: 9px;
+        color: @gray400;
+        line-height: 1;
+    }
+
+    &__badge-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: #fff;
+        margin-top: -2px;
+    }
+
+    // 手机模型（仅桌面端）
+    &__phones {
+        display: none;
+
+        @media (min-width: 1024px) {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            gap: 12px;
+            padding-right: 16px;
+        }
+    }
+
+    &__phone {
+        width: 112px;
+        height: 224px;
+        border-radius: 32px;
+        background: #000;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        &--left {
+            transform: rotate(-6deg) translateY(16px);
+        }
+
+        &--right {
+            transform: rotate(6deg) translateY(-8px);
+        }
+    }
+}
+
+// ============================================================
+// 底部
+// ============================================================
+.footer {
+    border-top: 1px solid @border-light;
+    background: @bg;
+    padding: 32px 16px;
+
+    @media (min-width: 640px) {
+        padding: 32px 24px;
+    }
+
+    &__inner {
+        max-width: 1536px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+
+        @media (min-width: 768px) {
+            flex-direction: row;
+        }
+    }
+
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    &__logo {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: linear-gradient(to bottom right, @pink, @purple600);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #fff;
+    }
+
+    &__brand-name {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    &__brand-slogan {
+        font-size: 12px;
+        color: @gray500;
+    }
+
+    &__links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        font-size: 14px;
+        color: @gray400;
+    }
+
+    &__link {
+        color: @gray400;
+        text-decoration: none;
+        transition: color 0.15s;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+
+    &__social {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    &__social-link {
+        color: @gray500;
+        text-decoration: none;
+        transition: color 0.15s;
+        display: flex;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+
+    &__copyright {
+        font-size: 12px;
+        color: @gray600;
+        margin-left: 8px;
+    }
+}

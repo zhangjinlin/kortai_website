@@ -1,0 +1,118 @@
+// ============================================================
+// 博客列表页样式（app/blog/page.less）
+// ============================================================
+
+@green: #46d3a9;   // 标签 / "Read more" 主色
+
+.blog-list {
+  font-family: Arial, sans-serif;
+  padding: 60px 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  color: #e5e5e5;
+  min-height: 100vh;
+
+  // 页面主标题
+  &__title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  // 标题下的说明文字
+  &__intro {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 48px;
+  }
+
+  // 文章列表容器
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  // 整块卡片的链接（去掉下划线）
+  &__link {
+    text-decoration: none;
+  }
+
+  // 暂无文章时的占位
+  &__empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: #666;
+  }
+
+  &__empty-text {
+    font-size: 18px;
+  }
+}
+
+// ---------------- 单篇文章卡片 ----------------
+.blog-card {
+  padding: 28px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+
+  // 悬浮时描边变绿
+  &:hover {
+    border-color: rgba(70, 211, 169, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  // 日期 + 标签 一行
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  &__date {
+    font-size: 13px;
+    color: #666;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  &__tag {
+    font-size: 12px;
+    color: @green;
+    background: rgba(70, 211, 169, 0.08);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  &__title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 10px;
+    line-height: 1.4;
+  }
+
+  &__desc {
+    font-size: 15px;
+    color: #999;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  // "Read more →"
+  &__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    color: @green;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}

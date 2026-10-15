@@ -1,0 +1,137 @@
+// ============================================================
+// 博客详情页样式（app/blog/[slug]/page.less）
+// 正文内部的 HTML 标签由 globals.css 的 .blog-content 控制
+// ============================================================
+
+@green: #46d3a9;   // 链接 / 标签主色
+
+.blog-post {
+  font-family: Arial, sans-serif;
+  padding: 60px 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #e5e5e5;
+  min-height: 100vh;
+
+  // "← Back to Blog"
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #888;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 32px;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  // ---------- 文章头部 ----------
+  &__header {
+    margin-bottom: 40px;
+  }
+
+  // 日期 + 标签
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__date {
+    font-size: 13px;
+    color: #666;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  &__tag {
+    font-size: 12px;
+    color: @green;
+    background: rgba(70, 211, 169, 0.08);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  // 文章标题（随屏幕宽度自适应字号）
+  &__title {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: bold;
+    color: #fff;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  // ---------- 正文 ----------
+  &__content {
+    line-height: 1.9;
+    font-size: 16px;
+  }
+
+  // ---------- 底部导航 ----------
+  &__nav {
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  // "← All Articles"
+  &__nav-prev {
+    color: @green;
+    text-decoration: none;
+    font-size: 14px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // "Home →"
+  &__nav-next {
+    color: #888;
+    text-decoration: none;
+    font-size: 14px;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+// ---------------- 文章未找到 ----------------
+.blog-notfound {
+  font-family: Arial, sans-serif;
+  padding: 80px 40px;
+  text-align: center;
+  color: #e5e5e5;
+  min-height: 100vh;
+
+  &__title {
+    color: #fff;
+    font-size: 32px;
+  }
+
+  &__desc {
+    color: #888;
+    margin-top: 12px;
+  }
+
+  &__link {
+    color: @green;
+    margin-top: 24px;
+    display: inline-block;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

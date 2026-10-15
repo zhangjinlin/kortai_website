@@ -1,0 +1,71 @@
+// ============================================================
+// Contact Us 页面样式（app/contact/page.less）
+// ============================================================
+
+@green: #46d3a9;   // 邮件链接主色
+@text:  #e5e5e5;   // 正文颜色
+
+.contact {
+  font-family: Arial, sans-serif;
+  padding: 60px 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  color: @text;
+  background: #0a0a0a;
+  min-height: 100vh;
+  line-height: 1.8;
+
+  // 页面主标题
+  &__title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 32px;
+  }
+
+  // 标题下的引导语
+  &__intro {
+    font-size: 18px;
+    margin-bottom: 40px;
+    color: #ccc;
+  }
+
+  // 每个信息区块
+  &__section {
+    margin-bottom: 40px;
+  }
+
+  // 区块小标题
+  &__subtitle {
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  // 邮箱卡片背景
+  &__card {
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  // 卡片内每一行邮箱
+  &__row {
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // 邮箱链接
+  &__mail {
+    color: @green;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
