@@ -42,16 +42,16 @@ const videoCategories = [
 ];
 
 const videos = [
-  { title: "Elegant Portrait", views: "1.2M", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80" },
-  { title: "Blue Hair Anime", views: "980K", image: "https://images.unsplash.com/photo-1563089145-599997674d42?w=400&q=80" },
-  { title: "Cute Cat", views: "2.1M", image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&q=80" },
-  { title: "Neon City", views: "1.5M", image: "https://images.unsplash.com/photo-1535295972055-1c762f4483e5?w=400&q=80" },
-  { title: "Office Lady", views: "876K", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80" },
-  { title: "Beach Dog", views: "1.8M", image: "https://images.unsplash.com/photo-1519098901909-b1553a1190af?w=400&q=80" },
-  { title: "White Hair Elf", views: "1.1M", image: "https://images.unsplash.com/photo-1563089145-599997674d42?w=400&q=80" },
-  { title: "Romantic Couple", views: "2.3M", image: "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400&q=80" },
-  { title: "Party Girl", views: "992K", image: "https://images.unsplash.com/photo-1496440737103-cd596325d314?w=400&q=80" },
-  { title: "Space Walk", views: "1.4M", image: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&q=80" },
+  { title: "Elegant Portrait", views: "1.2M", image: "/images/gallery/01-beach-portrait.png" },
+  { title: "Blue Hair Anime", views: "980K", image: "/images/gallery/02-blue-anime.png" },
+  { title: "Cute Cat", views: "2.1M", image: "/images/gallery/03-orange-kitten.png" },
+  { title: "Neon City", views: "1.5M", image: "/images/gallery/04-neon-portrait.png" },
+  { title: "Office Lady", views: "876K", image: "/images/gallery/05-office-portrait.png" },
+  { title: "Beach Dog", views: "1.8M", image: "/images/gallery/06-beach-retriever.png" },
+  { title: "White Hair Elf", views: "1.1M", image: "/images/gallery/07-silver-anime.png" },
+  { title: "Romantic Couple", views: "2.3M", image: "/images/gallery/08-romantic-couple.png" },
+  { title: "Party Girl", views: "992K", image: "/images/gallery/09-purple-dancer.png" },
+  { title: "Space Walk", views: "1.4M", image: "/images/gallery/10-astronaut.png" },
 ];
 
 // ============================================================
@@ -61,30 +61,32 @@ const powerfulTools = [
   {
     title: "Image to Video",
     desc: "Turn your photos into stunning videos.",
-    image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80",
+    image: "/images/gallery/01-beach-portrait.png",
   },
   {
     title: "Text to Video",
     desc: "Bring your ideas to life with a simple prompt.",
-    image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&q=80",
+    image: "/images/tools/cloud-castle.png",
   },
   {
     title: "Multi-Image Video",
     desc: "Combine multiple images into a smooth video.",
     images: [
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80",
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&q=80",
+      "/images/gallery/05-office-portrait.png",
+      "/images/gallery/01-beach-portrait.png",
+      "/images/gallery/04-neon-portrait.png",
+      "/images/gallery/05-office-portrait.png",
     ],
   },
   {
     title: "AI Avatar",
     desc: "Create talking avatars with realistic expressions.",
-    image: "https://images.unsplash.com/photo-1620332372374-f108c53d2e03?w=600&q=80",
+    image: "/images/tools/pink-avatar.png",
   },
   {
     title: "Lip Sync",
     desc: "Make characters talk with natural lip sync.",
-    image: "https://images.unsplash.com/photo-1496440737103-cd596325d314?w=600&q=80",
+    image: "/images/tools/headphone-singer.png",
   },
 ];
 
@@ -485,7 +487,7 @@ export default function Home() {
                   <div className="generator__upload">
                   <div className="generator__upload-preview">
                     <img
-                      src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80"
+                      src="/images/gallery/05-office-portrait.png"
                       alt="Upload preview"
                     />
                   </div>
@@ -554,7 +556,7 @@ export default function Home() {
 
                   <div className="generator__preview-main">
                     <img
-                      src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80"
+                      src="/images/gallery/01-beach-portrait.png"
                       alt="Generated preview"
                     />
                   </div>
@@ -562,9 +564,9 @@ export default function Home() {
                   {/* 右侧缩略图 */}
                   <div className="generator__thumbs">
                     {[
-                      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&q=80",
-                      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
-                      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=200&q=80",
+                      "/images/gallery/07-silver-anime.png",
+                      "/images/gallery/03-orange-kitten.png",
+                      "/images/gallery/10-astronaut.png",
                     ].map((src, i) => (
                       <div key={i} className="generator__thumb">
                         <img src={src} alt="" />
