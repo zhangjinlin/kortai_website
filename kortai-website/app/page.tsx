@@ -48,7 +48,7 @@ const videos = [
   { title: "Neon City", views: "1.5M", image: "https://images.unsplash.com/photo-1535295972055-1c762f4483e5?w=400&q=80" },
   { title: "Office Lady", views: "876K", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80" },
   { title: "Beach Dog", views: "1.8M", image: "https://images.unsplash.com/photo-1519098901909-b1553a1190af?w=400&q=80" },
-  { title: "White Hair Elf", views: "1.1M", image: "https://images.unsplash.com/photo-1616091093714-cfcca8ab7889?w=400&q=80" },
+  { title: "White Hair Elf", views: "1.1M", image: "https://images.unsplash.com/photo-1563089145-599997674d42?w=400&q=80" },
   { title: "Romantic Couple", views: "2.3M", image: "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400&q=80" },
   { title: "Party Girl", views: "992K", image: "https://images.unsplash.com/photo-1496440737103-cd596325d314?w=400&q=80" },
   { title: "Space Walk", views: "1.4M", image: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&q=80" },
@@ -84,7 +84,7 @@ const powerfulTools = [
   {
     title: "Lip Sync",
     desc: "Make characters talk with natural lip sync.",
-    image: "https://images.unsplash.com/photo-1516280440614-6697288d5d38?w=600&q=80",
+    image: "https://images.unsplash.com/photo-1496440737103-cd596325d314?w=600&q=80",
   },
 ];
 
@@ -318,6 +318,7 @@ export default function Home() {
               <Link href="/" className="nav__link nav__link--active">Home</Link>
               <Link href="/#tools" className="nav__link">AI Tools</Link>
               <Link href="/#explore" className="nav__link">Explore</Link>
+              <Link href="/#download" className="nav__link">Pricing</Link>
               <Link href="/blog" className="nav__link">Blog</Link>
               <Link href="/about-us" className="nav__link">About</Link>
             </div>
@@ -434,8 +435,8 @@ export default function Home() {
             </div>
 
             {/* 右侧占位（手写标注等装饰位，暂留空） */}
-            <div className="hero__right" />
-          </div>
+            <div className="hero__right" aria-hidden="true" />
+                    </div>
         </div>
 
         {/* 轮播指示点 */}
@@ -529,7 +530,7 @@ export default function Home() {
                         </div>
                       </div>
                     ))}
-                    <button className="generator__btn generator__btn--inline">
+                    <button className="generator__btn">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
                       </svg>
@@ -544,11 +545,19 @@ export default function Home() {
             {/* 右侧生成结果预览 */}
               <div className="generator__col generator__col--preview">
                 <div className="generator__preview">
-                  <img
-                    src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80"
-                    alt="Generated preview"
-                    className="generator__preview-img"
-                  />
+                  {/* 手写标注 */}
+                  <div className="generator__handwrite">
+                    From image
+                    <br />
+                    to video
+                  </div>
+
+                  <div className="generator__preview-main">
+                    <img
+                      src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80"
+                      alt="Generated preview"
+                    />
+                  </div>
 
                   {/* 右侧缩略图 */}
                   <div className="generator__thumbs">
@@ -556,19 +565,11 @@ export default function Home() {
                       "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&q=80",
                       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80",
                       "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=200&q=80",
-                      "https://images.unsplash.com/photo-1539571696357-5a3c5b47b8d3?w=200&q=80",
                     ].map((src, i) => (
                       <div key={i} className="generator__thumb">
                         <img src={src} alt="" />
                       </div>
                     ))}
-                  </div>
-
-                  {/* 手写标注 */}
-                  <div className="generator__handwrite">
-                    From image
-                    <br />
-                    to video
                   </div>
                 </div>
               </div>
@@ -709,7 +710,7 @@ export default function Home() {
             </div>
 
             {/* 右：Get Kort AI App */}
-            <div className="app-cta">
+            <div className="app-cta" id="download">
               <div className="app-cta__shine" />
               <div className="app-cta__glow" />
 
@@ -755,16 +756,10 @@ export default function Home() {
                 {/* 手机模型 */}
                 <div className="app-cta__phones">
                   <div className="app-cta__phone app-cta__phone--left">
-                    <img
-                      src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80"
-                      alt="App preview"
-                    />
+                    <div className="app-cta__phone-screen"><img src="/logo_icon.png" alt="" /><strong>Kort AI</strong><span>AI Video Generator</span><small>Turn your imagination<br />into stunning videos.</small><div className="app-cta__phone-action">Create Now</div></div>
                   </div>
                   <div className="app-cta__phone app-cta__phone--right">
-                    <img
-                      src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80"
-                      alt="App preview"
-                    />
+                    <div className="app-cta__phone-gallery"><strong>✦ Explore</strong>{videos.slice(0, 6).map(v => <img key={v.title} src={v.image} alt="" />)}</div>
                   </div>
                 </div>
               </div>
@@ -789,6 +784,7 @@ export default function Home() {
           <div className="footer__links">
             <Link href="/about-us" className="footer__link">About</Link>
             <Link href="/blog" className="footer__link">Blog</Link>
+            <Link href="/#download" className="footer__link">Pricing</Link>
             <Link href="/privacy-policy" className="footer__link">Privacy Policy</Link>
             <Link href="/terms-of-service" className="footer__link">Terms of Service</Link>
             <Link href="/contact" className="footer__link">Contact</Link>
