@@ -313,7 +313,7 @@ export default function Home() {
         <div className="nav__inner">
           <div className="nav__brand">
             <Link href="/" className="nav__logo">
-              <span className="nav__logo-mark">K</span>
+              <span className="nav__logo-mark">K </span>
               <span className="nav__logo-text">Kort AI</span>
             </Link>
             <div className="nav__links">
@@ -438,7 +438,7 @@ export default function Home() {
 
             {/* 右侧占位（手写标注等装饰位，暂留空） */}
             <div className="hero__right" aria-hidden="true" />
-                    </div>
+          </div>
         </div>
 
         {/* 轮播指示点 */}
@@ -485,66 +485,66 @@ export default function Home() {
                 {/* 左侧上传区 + 中间输入区 */}
                 <div className="generator__work">
                   <div className="generator__upload">
-                  <div className="generator__upload-preview">
-                    <img
-                      src="/images/gallery/05-office-portrait.png"
-                      alt="Upload preview"
-                    />
-                  </div>
-                  <div className="generator__upload-info">
-                    <div className="generator__upload-icon">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                        <polyline points="17 8 12 3 7 8" />
-                        <line x1="12" y1="3" x2="12" y2="15" />
-                      </svg>
+                    <div className="generator__upload-preview">
+                      <img
+                        src="/images/gallery/05-office-portrait.png"
+                        alt="Upload preview"
+                      />
                     </div>
-                    <p className="generator__upload-text">Upload an image</p>
-                    <p className="generator__upload-hint">( JPG / PNG / WebP )</p>
-                  </div>
-                </div>
-
-                {/* 中间输入区 + 控制项 */}
-                <div className="generator__main">
-                  <div className="generator__input">
-                    <textarea
-                      className="generator__textarea"
-                      placeholder={"Describe the video you want to create.\n(e.g. A girl walking on the beach, cinematic style, warm sunlight)"}
-                      maxLength={500}
-                      defaultValue=""
-                    />
-                    <div className="generator__input-meta">
-                      <span className="generator__input-at">@</span>
-                      <span>0/500</span>
-                    </div>
-                  </div>
-
-                  <div className="generator__controls">
-                    {generatorControls.map((ctl) => (
-                      <div key={ctl.label} className="generator__control">
-                        <label className="generator__control-label">{ctl.label}</label>
-                        <div className="generator__control-value">
-                          {ctl.icon}
-                          <span className="generator__control-text">{ctl.value}</span>
-                          <svg className="generator__control-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="6 9 12 15 18 9" />
-                          </svg>
-                        </div>
+                    <div className="generator__upload-info">
+                      <div className="generator__upload-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                          <polyline points="17 8 12 3 7 8" />
+                          <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
                       </div>
-                    ))}
-                    <button className="generator__btn">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
-                      </svg>
-                      Generate Video
-                      <span>→</span>
-                    </button>
+                      <p className="generator__upload-text">Upload an image</p>
+                      <p className="generator__upload-hint">( JPG / PNG / WebP )</p>
+                    </div>
+                  </div>
+
+                  {/* 中间输入区 + 控制项 */}
+                  <div className="generator__main">
+                    <div className="generator__input">
+                      <textarea
+                        className="generator__textarea"
+                        placeholder={"Describe the video you want to create.\n(e.g. A girl walking on the beach, cinematic style, warm sunlight)"}
+                        maxLength={500}
+                        defaultValue=""
+                      />
+                      <div className="generator__input-meta">
+                        <span className="generator__input-at">@</span>
+                        <span>0/500</span>
+                      </div>
+                    </div>
+
+                    <div className="generator__controls">
+                      {generatorControls.map((ctl) => (
+                        <div key={ctl.label} className="generator__control">
+                          <label className="generator__control-label">{ctl.label}</label>
+                          <div className="generator__control-value">
+                            {ctl.icon}
+                            <span className="generator__control-text">{ctl.value}</span>
+                            <svg className="generator__control-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                          </div>
+                        </div>
+                      ))}
+                      <button className="generator__btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
+                        </svg>
+                        Generate Video
+                        <span>→</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* 右侧生成结果预览 */}
+              {/* 右侧生成结果预览 */}
               <div className="generator__col generator__col--preview">
                 <div className="generator__preview">
                   {/* 手写标注 */}
